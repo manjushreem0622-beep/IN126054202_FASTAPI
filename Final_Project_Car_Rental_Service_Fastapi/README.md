@@ -4,7 +4,6 @@ A fully functional REST API built using FastAPI that simulates a real-world car 
 This project allows users to manage cars, customers, and bookings with features like booking lifecycle, filtering, sorting, and pagination.
 
 📌 **Features**
-
 🚘 **Car Management**
     • Add new cars
     • View all cars (with pagination)
@@ -41,6 +40,12 @@ This project allows users to manage cars, customers, and bookings with features 
     • FastAPI
     • Uvicorn
     • Pydantic
+
+**📌 Project Highlights**
+- Implemented complete booking lifecycle
+- Designed real-world business logic
+- Integrated search, sorting, pagination
+- Structured API with clean endpoints
 
 ▶️ **How to Run**
 Install dependencies:
