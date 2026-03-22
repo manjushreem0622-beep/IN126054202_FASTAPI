@@ -42,6 +42,17 @@ This project allows users to manage cars, customers, and bookings with features 
     • Uvicorn
     • Pydantic
 
+
+💰 **Discount & Coupon Feature**
+**Discount Endpoint**
+GET /bookings/{booking_id}/discount
+**Coupon Endpoint**
+GET /bookings/{booking_id}/apply-coupon
+ Available Coupons:
+ CODE10 → 10%
+ SAVE20 → 20%
+ MEGA30 → 30%
+
 📊 **Sample Data**
   Cars
     • Hyundai i20
