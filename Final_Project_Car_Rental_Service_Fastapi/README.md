@@ -42,6 +42,55 @@ This project allows users to manage cars, customers, and bookings with features 
     • Uvicorn
     • Pydantic
 
+▶️ **How to Run**
+Install dependencies:
+pip install fastapi uvicorn
+
+Run the server:
+uvicorn main:app --reload
+
+Open in browser:
+http://127.0.0.1:8000/docs
+
+**📌 API Overview**
+🚘 Cars
+GET /cars → Get all cars
+GET /cars/{id} → Get car by ID
+POST /cars → Add new car
+PUT /cars/{id} → Update car
+DELETE /cars/{id} → Delete car
+GET /cars/available/list → Get available cars
+
+👤 **Customers**
+GET /customers → Get all customers
+GET /customers/{id} → Get customer by ID
+POST /customers → Add customer
+PUT /customers/{id} → Update customer
+DELETE /customers/{id} → Delete customer
+
+📅 **Bookings**
+POST /bookings → Create booking
+GET /bookings → View all bookings
+GET /bookings/{id} → Get booking by ID
+PUT /bookings/{id} → Update booking
+DELETE /bookings/{id} → Delete booking
+
+🔄 **Booking Workflow**
+PATCH /bookings/{id}/confirm → Confirm booking
+PATCH /bookings/{id}/pickup → Pickup car
+PATCH /bookings/{id}/return-car → Return car
+
+**🔍 Advanced Features**
+GET /cars → Filtering, sorting, pagination
+GET /bookings/search/filter → Search & filter bookings
+
+💡 **Business Logic**
+Car must be available before booking
+Total amount is calculated based on rent per day and number of days
+Booking status flow:
+pending → confirmed → picked_up → returned
+Car availability becomes false when picked up and true when returned
+Cars/customers with active bookings cannot be deleted
 
 💰 **Discount & Coupon Feature**
 **Discount Endpoint**
@@ -80,5 +129,5 @@ Workflow (pending → confirmed → picked up → returned) tested
       • Validation and error handling
 
 🙋 **Author**
-Manju Shree
+Manjushree M
 FastAPI Internship Project
