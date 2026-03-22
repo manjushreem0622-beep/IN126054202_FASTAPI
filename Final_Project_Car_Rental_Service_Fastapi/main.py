@@ -533,3 +533,91 @@ def search_filter_bookings(
         "limit": limit,
         "bookings": paginated_result
     }
+
+
+    # ═══════════════════════════════════════════════════════════════
+# 💰 DISCOUNT + COUPON FEATURES (BONUS)
+# ═══════════════════════════════════════════════════════════════
+
+# Coupon Database
+coupons = {
+    "CODE10": 10,
+    "SAVE20": 20,
+    "MEGA30": 30
+}
+
+
+# Helper for discount
+def apply_discount(total_amount: int, discount_percent: int):
+    discount_value = (total_amount * discount_percent) / 100
+    final_amount = total_amount - discount_value
+    return discount_value, final_amount
+
+
+#  GET /bookings/{booking_id}/discount
+@app.get("/bookings/{booking_id}/discount")
+def get_discount(
+    booking_id: int,
+    discount_percent: int = Query(..., ge=0, le=50)
+):
+    booking = find_booking(booking_id)
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+
+    if booking["status"] not in ["confirmed", "picked_up", "returned"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Discount allowed only for confirmed or completed bookings"
+        )
+
+    discount_value, final_amount = apply_discount(
+        booking["total_amount"],
+        discount_percent
+    )
+
+    return {
+        "message": "Discount applied successfully",
+        "booking_id": booking_id,
+        "original_amount": booking["total_amount"],
+        "discount_percent": discount_percent,
+        "discount_value": discount_value,
+        "final_amount": final_amount
+    }
+
+
+#  GET /bookings/{booking_id}/apply-coupon
+@app.get("/bookings/{booking_id}/apply-coupon")
+def apply_coupon(
+    booking_id: int,
+    coupon_code: str
+):
+    booking = find_booking(booking_id)
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+
+    if booking["status"] not in ["confirmed", "picked_up", "returned"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Coupon can only be applied to confirmed or completed bookings"
+        )
+
+    coupon_code = coupon_code.upper()
+
+    if coupon_code not in coupons:
+        raise HTTPException(status_code=400, detail="Invalid coupon code")
+
+    discount_percent = coupons[coupon_code]
+
+    discount_value, final_amount = apply_discount(
+        booking["total_amount"],
+        discount_percent
+    )
+
+    return {
+        "message": "Coupon applied successfully",
+        "booking_id": booking_id,
+        "coupon_code": coupon_code,
+        "discount_percent": discount_percent,
+        "discount_value": discount_value,
+        "final_amount": final_amount
+    }
